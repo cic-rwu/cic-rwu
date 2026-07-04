@@ -34,6 +34,10 @@ tmpfile="$(mktemp)"
 # import cic custom logging script
 . "$SCRIPT_DIR/ciclogger.sh" || { log error "Failed to find ciclogger file."; exit 1; }
 
+
+
+
+
 #help message output
 printf -v SCRIPT_OPTS "
     ${BO}Usage: preserve [OPTION] {SOURCE} {DEST}${NOFO}
@@ -71,7 +75,8 @@ checkpath() {
 
     case "$1" in
         source ) rp="$(realpath "$1" 2> "$tmpfile")"
-                :
+                if [[ -n "$rp" && ! -s "$tmpfile" ]] #if rp is nonzero and the tempfile (stderr) does NOT have a size > 0.
+                     
                 ;;
     esac
 
