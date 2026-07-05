@@ -1,3 +1,0 @@
-vault.yml
-host_vars/*
-group_vars/*/vault*
