@@ -32,8 +32,4 @@ log(){
     sleep 0.5s
 }
 
-help(){
-    
-}
-
 export BO ULIN NOFO ITAL DIM log
