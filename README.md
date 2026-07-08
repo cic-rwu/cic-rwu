@@ -68,4 +68,4 @@ New members are always welcome, no experience required.
 
 ## License
 
-Distributed under the [MIT License](LICENSE).
+Distributed under the [GPLv3](LICENSE).
