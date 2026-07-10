@@ -1,6 +1,6 @@
 
 [![Issues](https://img.shields.io/github/issues/cic-rwu/cic-rwu)](https://github.com/cic-rwu/cic-rwu/issues)
-[![License GPL v3](https://img.shields.io/github/license/cic-rwu/cic-rwu)](https://www.gnu.org/licenses/gpl-3.0.txt)
+[![License](https://img.shields.io/badge/license-%20%20GNU%20GPLv3%20-green)](https://github.com/cic-rwu/cic-rwu/blob/main/LICENSE)
 [![Last Commit](https://img.shields.io/github/last-commit/cic-rwu/cic-rwu)](https://github.com/cic-rwu/cic-rwu/commits/main)
 
 <p align="center">
