@@ -1,0 +1,16 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-mp",
+            "type": "shell",
+            "command": "pandoc --standalone --to man ${file} -o ${fileDirname}/1/${fileBasenameNoExtension}",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "problemMatcher": [],
+            "detail": "Compile the active Markdown file into a groff man page with Pandoc."
+        }
+    ]
+}

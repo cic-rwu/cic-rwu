@@ -1,0 +1,14 @@
+{ 
+    "editor.fontFamily": "'Droid Sans Mono','JetBrainsMono Nerd Font'",
+    "editor.wordWrap": "off",
+    "editor.fontVariations": true,
+    "editor.lineHeight": 24,
+    "scm.compactFolders": false,
+    "chat.disableAIFeatures": true,
+    "git.autofetch": true,
+    "shell-syntax.defaultShell": "bash",
+    "bashIde.shfmt.caseIndent": true,
+    "bashIde.shfmt.languageDialect": "bash",
+    "chat.agent.thinking.terminalTools": false,
+    "editor.fontSize": 16,
+}

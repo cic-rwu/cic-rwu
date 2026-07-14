@@ -1,9 +1,9 @@
 #!/bin/bash
 #==========================================================
 #
-#       FILE:           bin/cicdaemon-bootstrap
-#       USAGE:          TBD 
-#       DESCRIPTION:    Script to automate checking host configurations
+#       FILE:           bin/cicdaemon
+#       USAGE:          cicdaemon bootstrap
+#       DESCRIPTION:    Script to automate bootstrapping host configurations
 #
 #       AUTHOR:         MXHML (mxhml@proton.me)
 #       VERSION:        1.0
@@ -14,8 +14,25 @@
 #			This script checks the 
 #==========================================================
 set -o pipefail
+trap cleanup EXIT
+START_TIME=$(date +%s%N)
 declare -r 		SCRIPT_DIR="$(cd -P "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 declare -r		WORK_DIR="/opt/cicdaemon"
+declare -r 		LOG_DIR="${WORK_DIR}/log"
+declare -r		tmpdir="$(mktemp -d)"
+. "${SCRIPT_DIR}/ciclogger"
+cleanup(){
+	rm -rf "$tmpdir"
+	ELAPSED=$((($(date +%s%N) - $START_TIME)/1000000))
+	log info "Finished in ${ELAPSED}ms"
+}
+#=======================
+DEV=true
 
-#check if WORK_DIR exists. if not, create it
-[ -d "$WORK_DIR" ] || mkdir -p "$WORK_DIR"
+#check if WORK_DIR exists. if not, create it and the log directory
+if [[ -d $WORK_DIR ]]; then
+	 :
+elif [[ -x /opt ]]; then
+	 log error "Bad permissions to write to /opt? -x file test failed."
+	 exit 1
+fi

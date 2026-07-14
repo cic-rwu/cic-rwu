@@ -11,9 +11,6 @@
 #       REVISION:       1
 #
 #==========================================================
-
-# This script will default to using gum(1)[https://github.com/charmbracelet/gum] for formatting logs.
-# TODO: Add custom logging as a fallback (for now)
 # This script also defines some common tput(1) formatting variables
 
 BO=$(tput bold)
@@ -24,12 +21,28 @@ DIM=$(tput dim)
 RED=$(tput setaf 1)
 GR=$(tput setaf 2)
 
-# log [LEVEL] message {key} {value}
-# uses gum(1), if available
-log(){
-    [ $# -eq 2 ] && set -- "$@" "" ""
-    gum log --time timeonly --prefix="${FUNCNAME[1]}" -sl "$1" "$2" "$3" "$4"
-    sleep 0.5s
-}
+UPTIME=$(cat /proc/uptime | awk '{print $1}')
 
+# log [LEVEL] message
+log(){
+    #are we being piped?
+    if [[ ! -t 1 ]]; then
+        #Script output is being piped to another command or file
+        :
+    else
+        #we are NOT being piped
+        :
+    fi
+
+    case $1 in
+        info)
+             lecolor="$GR"
+        ;;
+        error)
+             lecolor="$RED"
+        ;;
+    esac
+
+    printf "%s (${DIM}%s${NOFO})[${BO}${lecolor}%s${NOFO}]: %b\n" "$UPTIME" "${FUNCNAME[1]}" "${1^^}" "${2}" 
+}
 export BO ULIN NOFO ITAL DIM log

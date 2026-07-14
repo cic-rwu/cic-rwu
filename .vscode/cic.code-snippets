@@ -1,0 +1,21 @@
+{
+	"VM Inventory Shortcut":{
+		"scope": "javascript",
+		"prefix": "vm",
+	"body": [
+		"vm${1}:{",
+		"\thostname: '${2}',",
+		"\tdomain: '${3}',",
+		"\tnetinfo: {",
+		"\t\tnet${4:}: {",
+		"\t\t\taddr: '${5}',",
+		"\t\t},",
+		"\t},",
+		"\tnotes:`",
+		"\t\t${8}",
+		"\t`",
+		"},",
+		"${0}"
+	],
+	}
+}

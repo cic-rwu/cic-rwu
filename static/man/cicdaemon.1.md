@@ -12,7 +12,8 @@ footer: cicdaemon 1.0
 
 # SYNOPSIS
 
-| cicdaemon <option> COMMAND... 
+| cicdaemon
+| cicdaemon bootstrap <option>
 
 # DESCRIPTION
 
