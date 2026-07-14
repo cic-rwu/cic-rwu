@@ -11,7 +11,7 @@
 #       REVISION:       0
 #
 #		EXTENDED DESCRIPTION
-#		
+#			This script checks the 
 #==========================================================
 set -o pipefail
 trap cleanup EXIT
@@ -27,9 +27,6 @@ cleanup(){
 	log info "Finished in ${ELAPSED}ms"
 }
 #=======================
-#this script assumes it is being ran as root, so commands like rm do not use sudo.
-[ $UID -ne 0 ] && { log error "Bad UID. Are you root?"; exit 1; }
-
 DEV=true
 
 #check if WORK_DIR exists. if not, create it and the log directory
