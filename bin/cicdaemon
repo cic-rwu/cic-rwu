@@ -11,7 +11,7 @@
 #       REVISION:       0
 #
 #		EXTENDED DESCRIPTION
-#			This script checks the 
+#		
 #==========================================================
 set -o pipefail
 trap cleanup EXIT
@@ -27,12 +27,22 @@ cleanup(){
 	log info "Finished in ${ELAPSED}ms"
 }
 #=======================
+#this script assumes it is being ran as root, so commands like rm do not use sudo.
+[ $UID -ne 0 ] && { log error "Bad UID. Are you root?"; exit 1; }
+
 DEV=true
 
 #check if WORK_DIR exists. if not, create it and the log directory
-if [[ -d $WORK_DIR ]]; then
-	 :
-elif [[ -x /opt ]]; then
-	 log error "Bad permissions to write to /opt? -x file test failed."
-	 exit 1
+[ ! -d $WORK_DIR ] && mkdir -p /opt/cicdaemon/log
+
+#reset and log /etc/machine-id and re-link /var/lib/dbus/machine-id to it
+if [[ -f /etc/machine-id || -f /var/lib/dbus/machine-id ]]; then
+	log info "Found existing machine id: [$(cat /etc/machine-id)]"
+	rm -f /etc/machine-id /var/lib/dbus/machine-id
+fi
+if systemd-machine-id-setup; then
+	log info "Generated new machine id: [$(cat /etc/machine-id)]"
+	if ln -s /etc/machine-id /var/lib/dbus/machine-id; then :
+	else log error "Failed to symlink /etc/machine-id to /var/lib/dbus/machine-id"; exit 1
+	fi
 fi
