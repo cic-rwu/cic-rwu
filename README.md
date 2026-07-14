@@ -1,10 +1,17 @@
 
-[![Issues](https://img.shields.io/github/issues/cic-rwu/cic-rwu)](https://github.com/cic-rwu/cic-rwu/issues)
 [![License](https://img.shields.io/badge/license-%20%20GNU%20GPLv3%20-green)](https://github.com/cic-rwu/cic-rwu/blob/main/LICENSE)
-[![Last Commit](https://img.shields.io/github/last-commit/cic-rwu/cic-rwu)](https://github.com/cic-rwu/cic-rwu/commits/main)
+[![Issues](https://img.shields.io/github/issues/cic-rwu/cic-rwu)](https://github.com/cic-rwu/cic-rwu/issues)
+
+
+![branch main](https://img.shields.io/badge/branch-main-green?style=flat-square)
+![last commit](https://img.shields.io/github/last-commit/cic-rwu/cic-rwu/main?display_timestamp=committer&style=flat&label=last%20commit)
+
+![branch dev](https://img.shields.io/badge/branch-dev-orange?style=flat-square)
+![last commit](https://img.shields.io/github/last-commit/cic-rwu/cic-rwu/dev?display_timestamp=committer&style=flat&label=last%20commit)
+
 
 <p align="center">
-  <img src="docs/images/cic-logo-n5-nobg.png" alt="RWU Cybersecurity and Intel Club banner" width="730px" height="730px">
+  <img src="static/images/cic-base.svg" alt="RWU Cybersecurity and Intel Club banner" width="730px" height="730px">
   <!-- Replace docs/banner.png with the club logo/banner -->
 </p>
 
