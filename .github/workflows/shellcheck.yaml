@@ -1,0 +1,19 @@
+name: Lint Shell Scripts
+
+on:
+  push:
+    branches:
+      - cicdaemon
+      - master
+
+jobs:
+  shellcheck:
+    name: Run ShellCheck on files in bin
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: shellcheck lint
+        uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: './bin'
+          severity: error
