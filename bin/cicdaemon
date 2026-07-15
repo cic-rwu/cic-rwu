@@ -13,15 +13,15 @@
 #==========================================================
 set -o pipefail
 trap cleanup EXIT
-trap cleanup SIGINT
 START_TIME=$(date +%s%N)
 declare -r 		SCRIPT_DIR="$(cd -P "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 declare -r		WORK_DIR="/opt/cicdaemon"
 declare -r 		LOG_DIR="/var/log/cicdaemon"
 declare -r		tmpdir="$(mktemp -d)"
+
 . "${SCRIPT_DIR}/ciclogger"
 cleanup(){
-	rm -rf "$tmpdir"
+	rm --recursive --force "$tmpdir"
 	ELAPSED=$((($(date +%s%N) - $START_TIME)/1000000))
 	echo "Finished in ${ELAPSED}ms"
 }
@@ -31,16 +31,17 @@ DEV=true
 #script assumes you are root. if not, exit 1
 [ $UID -ne 0 ] && { log error "Bad permissions. Are you root?"; }
 
-#check if WORK_DIR exists. if not, create it and the log directory
-[ ! -d $WORK_DIR ] && mkdir -p /opt/cicdaemon /var/log/cicdaemon
+#check if WORK_DIR exists. if not, create it
+#we also create the /var/log directory
+[ ! -d $WORK_DIR ] && mkdir --parents /opt/cicdaemon /var/log/cicdaemon
 chattr +a /var/log/cicdaemon
 
 #reset and log /etc/machine-id and re-link /var/lib/dbus/machine-id to it
-rm -f /etc/machine-id /var/lib/dbus/machine-id
+rm --force /etc/machine-id /var/lib/dbus/machine-id
 if systemd-machine-id-setup; then
 	 log info "Generated new machine id: [$(cat /etc/machine-id)]"
-	if ln -s /etc/machine-id /var/lib/dbus/machine-id; then
-		 CIC_UUID=$( shasum -a 1  /etc/machine-id | awk '{print $1}' )
+	if ln --symbolic /etc/machine-id /var/lib/dbus/machine-id; then
+		 CIC_UUID=$( shasum --algorithm 1  /etc/machine-id | awk '{print $1}' )
 		 log info "Generated CIC_UUID: [$CIC_UUID]"
 		 xattr -w trusted.cicdaemon.sha1 "$CIC_UUID"
 		 echo "$CIC_UUID" > /etc/cic-id
@@ -58,19 +59,19 @@ targdir='/home/cicdaemon/.ssh'
 [[ "$(cat ${targdir}/authorized_keys &> /dev/null)" == "$pubkey" ]] && return 0
 
 #`root` should not have a .ssh folder to begin with. (`root` should NEVER have SSH access.)
-rm -rf /root/.ssh
+rm --recursive --force /root/.ssh
 
 if [[ -d "$targdir" ]]; then
 	 chattr -i "$targdir"
-	 rm -rf "$targdir"
-	 mkdir -p "$targdir"
+	 rm --recursive --force "$targdir"
+	 mkdir --parents "$targdir"
 else
 	mkdir -p /home/cicdaemon/.ssh
 fi
 
 if touch "${targdir}/authorized_keys"; then
 	 echo -e "$pubkey" > "${targdir}/authorized_keys"
-	 chown -R cicdaemon /home/cicdaemon/.ssh
+	 chown --recursive cicdaemon /home/cicdaemon/.ssh
 	 chmod 600 "${targdir}/authorized_keys" && chmod 700 "${targdir}"
 	 chattr +i "${targdir}"
 fi
