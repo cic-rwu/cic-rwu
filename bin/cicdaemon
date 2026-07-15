@@ -35,8 +35,7 @@ DEV=true
 chattr +a /var/log/cicdaemon
 
 #reset and log /etc/machine-id and re-link /var/lib/dbus/machine-id to it
-#on the template, /etc/machine-id should be empty
-#CIC_UUID is the sha1 checksum of the machine-id
+rm -f /etc/machine-id /var/lib/dbus/machine-id
 if systemd-machine-id-setup; then
 	 log info "Generated new machine id: [$(cat /etc/machine-id)]"
 	if ln -s /etc/machine-id /var/lib/dbus/machine-id; then
