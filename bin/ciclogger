@@ -6,9 +6,9 @@
 #       DESCRIPTION:    Standardize log handling for custom CIC scripts
 #
 #       AUTHOR:         MXHML (mxhml@proton.me)
-#       VERSION:        1.0.1
+#       VERSION:        1.0.2
 #       CREATED:        July 2, 2026
-#       REVISION:       1
+#       REVISION:       2
 #
 #==========================================================
 # This script also defines some common tput(1) formatting variables
@@ -22,6 +22,12 @@ RED=$(tput setaf 1)
 GR=$(tput setaf 2)
 
 UPTIME=$(cat /proc/uptime | awk '{print $1}')
+
+#check for cicdaemon's /var/log. cicdaemon itself shouldn't be handling this
+if [[ ! -d '/var/log/cicdaemon' ]]; then
+    mkdir --parents "/var/log/cicdaemon"
+    chattr +a "/var/log/cicdaemon"
+fi
 
 # log [LEVEL] message
 log(){
@@ -37,12 +43,15 @@ log(){
     case $1 in
         info)
              lecolor="$GR"
-        ;;
+        ;;&
         error)
              lecolor="$RED"
+             #redirect errors to stderr
+             printf "%s (${DIM}%s${NOFO})[${BO}${lecolor}%s${NOFO}]: %b\n" "$UPTIME" "${FUNCNAME[1]}" "${1^^}" "${2}"  1>&2
+        ;;&
+        *)
+             printf "%s (${DIM}%s${NOFO})[${BO}${lecolor}%s${NOFO}]: %b\n" "$UPTIME" "${FUNCNAME[1]}" "${1^^}" "${2}" 
         ;;
     esac
-
-    printf "%s (${DIM}%s${NOFO})[${BO}${lecolor}%s${NOFO}]: %b\n" "$UPTIME" "${FUNCNAME[1]}" "${1^^}" "${2}" 
 }
 export BO ULIN NOFO ITAL DIM log
