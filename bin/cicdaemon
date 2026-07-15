@@ -10,15 +10,13 @@
 #       CREATED:        July 14, 2026
 #       REVISION:       0
 #
-#		EXTENDED DESCRIPTION
-#			This script checks the 
 #==========================================================
 set -o pipefail
 trap cleanup EXIT
 START_TIME=$(date +%s%N)
 declare -r 		SCRIPT_DIR="$(cd -P "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 declare -r		WORK_DIR="/opt/cicdaemon"
-declare -r 		LOG_DIR="${WORK_DIR}/log"
+declare -r 		LOG_DIR="/var/log/cicdaemon"
 declare -r		tmpdir="$(mktemp -d)"
 . "${SCRIPT_DIR}/ciclogger"
 cleanup(){
@@ -33,7 +31,8 @@ DEV=true
 [ $UID -ne 0 ] && { log error "Bad permissions. Are you root?"; }
 
 #check if WORK_DIR exists. if not, create it and the log directory
-[ ! -d $WORK_DIR ] && mkdir -p /opt/cicdaemon/log
+[ ! -d $WORK_DIR ] && mkdir -p /opt/cicdaemon /var/log/cicdaemon
+chattr +a /var/log/cicdaemon
 
 #reset and log /etc/machine-id and re-link /var/lib/dbus/machine-id to it
 #on the template, /etc/machine-id should be empty
@@ -48,4 +47,30 @@ if systemd-machine-id-setup; then
 	fi
 else 
 	log error "Failed to symlink /etc/machine-id to /var/lib/dbus/machine-id"; exit 1
+fi
+
+#verify integrity of .ssh folders. 
+#prompts for the public SSH key to be added to cicdaemon
+read -rp "Enter SSH public key: " pubkey
+[ -z "$pubkey" ] && { log error "pubkey cannot be empty!"; exit 1; }
+targdir='/home/cicdaemon/.ssh'
+#check if authorized_keys already contains the provided pubkey
+[[ "$(cat ${targdir}/authorized_keys &> /dev/null)" == "$pubkey" ]] && return 0
+
+#`root` should not have a .ssh folder to begin with. (`root` should NEVER have SSH access.)
+rm -rf /root/.ssh
+
+if [[ -d "$targdir" ]]; then
+	 chattr -i "$targdir"
+	 rm -rf "$targdir"
+	 mkdir -p "$targdir"
+else
+	mkdir -p /home/cicdaemon/.ssh
+fi
+
+if touch "${targdir}/authorized_keys"; then
+	 echo -e "$pubkey" > "${targdir}/authorized_keys"
+	 chown -R cicdaemon /home/cicdaemon/.ssh
+	 chmod 600 "${targdir}/authorized_keys" && chmod 700 "${targdir}"
+	 chattr +i "${targdir}"
 fi
