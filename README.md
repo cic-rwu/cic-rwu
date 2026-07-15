@@ -6,8 +6,8 @@
 ![branch main](https://img.shields.io/badge/branch-main-green?style=flat-square)
 ![last commit](https://img.shields.io/github/last-commit/cic-rwu/cic-rwu/main?display_timestamp=committer&style=flat&label=last%20commit)
 
-![branch dev](https://img.shields.io/badge/branch-dev-orange?style=flat-square)
-![last commit](https://img.shields.io/github/last-commit/cic-rwu/cic-rwu/dev?display_timestamp=committer&style=flat&label=last%20commit)
+![branch dev](https://img.shields.io/badge/branch-cicdaemon-orange?style=flat-square)
+![last commit](https://img.shields.io/github/last-commit/cic-rwu/cic-rwu/cicdaemon?display_timestamp=committer&style=flat&label=last%20commit)
 
 
 <p align="center">
