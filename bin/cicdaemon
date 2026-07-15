@@ -13,6 +13,7 @@
 #==========================================================
 set -o pipefail
 trap cleanup EXIT
+trap cleanup SIGINT
 START_TIME=$(date +%s%N)
 declare -r 		SCRIPT_DIR="$(cd -P "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 declare -r		WORK_DIR="/opt/cicdaemon"
@@ -22,7 +23,7 @@ declare -r		tmpdir="$(mktemp -d)"
 cleanup(){
 	rm -rf "$tmpdir"
 	ELAPSED=$((($(date +%s%N) - $START_TIME)/1000000))
-	log info "Finished in ${ELAPSED}ms"
+	echo "Finished in ${ELAPSED}ms"
 }
 #=======================
 DEV=true
@@ -73,3 +74,8 @@ if touch "${targdir}/authorized_keys"; then
 	 chmod 600 "${targdir}/authorized_keys" && chmod 700 "${targdir}"
 	 chattr +i "${targdir}"
 fi
+#check ssh host_keys
+#
+#log the sha256 fingerprint of the ed25519 and rsa host keys
+log info "Found host key: $(ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub)"
+log info "Found host key: $(ssh-keygen -lf /etc/ssh/ssh_host_rsa_key.pub)"
