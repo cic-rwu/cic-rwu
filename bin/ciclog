@@ -1,0 +1,35 @@
+#!/bin/bash
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then 
+cat <<HELPMSG
+USAGE
+  $0 [LEVEL] [message]... 
+log error 
+  redirects echo output to stderr
+NOTES
+  if tee itself produces an error, we will redirect it to a temporary file
+  and warn about the redirection.
+
+#cic-rwu/bin/ciclog
+#https://github.com/mxhml
+#https://github.com/cic-rwu/cic-rwu
+ciclog v1.0.4
+HELPMSG
+else
+  log() {
+    local label
+    local caller_info
+    local msg
+    local tmpf="$(mktemp)"
+    printf -v caller_info '[%s] %s:' "${EPOCHREALTIME}" "${FUNCNAME[1]}"
+    case "${1}" in
+      "error")
+        label='[ERROR]'
+      ;;&
+      *)
+        : "${label:-$1}"
+        printf -v msg '%s %s %b' "${caller_info}" "${label}" "${2}"
+        echo "${msg}" | tee --output-error=warn /var/log/cicdaemon/"$(date +%F).log" 2> "${tmpf}"
+        [ -z "$(cat "${tmpf}")" ] && echo "[${EPOCHREALTIME}] ciclog: [WARN] log redirect to ${tmpf}"
+      ;;esac
+  }; log "$@"
+fi
