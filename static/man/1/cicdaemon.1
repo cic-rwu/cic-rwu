@@ -6,17 +6,8 @@
 cicdaemon \(en CIC management daemon
 .SH SYNOPSIS
 .PP
-cicdaemon
-.PD 0
-.P
-.PD
-cicdaemon bootstrap  [COMMAND]\&...
+cicdaemon \f[B]status\f[R] | \f[B]audit\f[R] | \f[B]modify\f[R]
+[\f[I]option\f[R]\&...]
 .SH DESCRIPTION
-\f[B]cicdaemon\f[R](1) is used to automatically configure and check the
-integrity of UNIX\-like hosts.
-This script will only ever allow \f[B]root\f[R] or the
-\f[B]cicdaemon\f[R] account modify it.
-.SH SYSTEM ACCOUNTS
-cicdaemon
-.SH COMMANDS
-.SH ENVIRONMENT
+\f[B]cicdaemon\f[R] is an orchestrator script for different subsystems
+.SH SUBSYSTEMS

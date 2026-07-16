@@ -4,10 +4,18 @@
         {
             "label": "build-mp",
             "type": "shell",
-            "command": "pandoc --standalone --to man ${file} -o ${fileDirname}/1/${fileBasenameNoExtension}",
+            "command": "pandoc --standalone --to man ${file} -o ${fileDirname}/8/${fileBasenameNoExtension} && echo 'TASK OK. (EXIT 0)'",
             "group": {
                 "kind": "build",
                 "isDefault": false
+            },
+            "presentation": {
+                "echo": false,
+                "reveal": "never",
+                "focus": false,
+                "panel": "shared",
+                "showReuseMessage": false,
+                "clear": true
             },
             "problemMatcher": [],
             "detail": "Compile the active Markdown file into a groff man page with Pandoc."
