@@ -12,7 +12,18 @@
 #
 #==========================================================
 set -o pipefail
-trap cleanup EXIT
+set -o errexit
+set -o nounset
+
+finish(){
+	result=$?
+	rm --recursive --force "$tmpdir"
+	ELAPSED=$((($(date +%s%N) - $START_TIME)/1000000))
+	echo "Finished in ${ELAPSED}ms"
+	exit ${result}
+}
+trap finish EXIT ERR
+
 START_TIME=$(date +%s%N)
 declare -r 		SCRIPT_DIR="$(cd -P "$(dirname -- "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 declare -r		WORK_DIR="/opt/cicdaemon"
@@ -20,24 +31,14 @@ declare -r 		LOG_DIR="/var/log/cicdaemon"
 declare -r		tmpdir="$(mktemp -d)"
 
 . "${SCRIPT_DIR}/ciclogger"
-cleanup(){
-	rm --recursive --force "$tmpdir"
-	ELAPSED=$((($(date +%s%N) - $START_TIME)/1000000))
-	echo "Finished in ${ELAPSED}ms"
-}
 #=======================
 DEV=true
 
 #Check the permissions of the user running the script to see if they have the proper permissions
-#to run the commands in this script, and modify protected directories/files.
-#	Typically, this is `root` (UID=0) or `cicdaemon` (UID=777)
-#RETURN CODES
-# 0		OK
-# 1		General error, or bad permissions
-# 
-checkPerms(){
+#based on UIDs. Subsystems require the user to be either root or cicdaemon
+#
+#Return 0 for OK, 1 for bad permissions/general error
 
-}
 [ $UID -ne 0 ] && { log error "Bad permissions. Are you root?"; }
 
 #check if WORK_DIR exists. if not, create it
