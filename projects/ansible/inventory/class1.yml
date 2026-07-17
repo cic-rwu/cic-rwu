@@ -1,5 +1,0 @@
-all:
-  children:
-    class1:
-      hosts:
-        vm670201:

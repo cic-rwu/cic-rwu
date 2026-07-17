@@ -1,5 +1,0 @@
-all:
-  children:
-    class3:
-      hosts:
-        vm673002:

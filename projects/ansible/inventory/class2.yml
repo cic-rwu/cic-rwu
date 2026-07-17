@@ -1,6 +1,0 @@
-all:
-  children:
-    class2:
-      hosts:
-        vm672002:
-        vm67500:
