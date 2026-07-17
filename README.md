@@ -3,76 +3,66 @@
 [![Issues](https://img.shields.io/github/issues/cic-rwu/cic-rwu)](https://github.com/cic-rwu/cic-rwu/issues)
 
 
-![branch main](https://img.shields.io/badge/branch-main-green?style=flat-square)
-![last commit](https://img.shields.io/github/last-commit/cic-rwu/cic-rwu/main?display_timestamp=committer&style=flat&label=last%20commit)
-
-![branch dev](https://img.shields.io/badge/branch-cicdaemon-orange?style=flat-square)
+![branch main](https://img.shields.io/badge/branch-cicdaemon-green?style=flat-square)
 ![last commit](https://img.shields.io/github/last-commit/cic-rwu/cic-rwu/cicdaemon?display_timestamp=committer&style=flat&label=last%20commit)
 
+---
+title: cicdaemon
+section: 8
+date: July 14 2026
+header: CIC Commands Manual
+footer: cicdaemon 1.1
+---
 
-<p align="center">
-  <img src="static/images/cic-base.svg" alt="RWU Cybersecurity and Intel Club banner" width="730px" height="730px">
-  <!-- Replace docs/banner.png with the club logo/banner -->
-</p>
+# NAME
 
->This repo is still a work in progress! If you have suggestions, please see [Contact](#contact) to send us an email, or submit an [issue](https://github.com/cic-rwu/cic-rwu/issues) on Github!
+| cicdaemon -- CIC host management and compliance daemon
 
-# cic-rwu
+# SYNOPSIS
 
-**Umbrella repository for the Roger Williams University Cybersecurity and Intel Club.**
+| cicdaemon < *COMMAND* > [ *OPTION* ] [ *HOST* ... ] < *SUBSYSTEM* > ...
 
-Every club project is starts here. Demos, tools, and experiments start as a folder in this repo; once a project outgrows the umbrella, it gets forked into its own standalone repository under the [cic-rwu](https://github.com/cic-rwu) org.
+# DESCRIPTION
 
-## Table of Contents
+**cicdaemon** is an orchestrator script for a **HOST**'s given **SUBSYSTEM**, like its *identity*, *network*, *dns*, *time*, *ssh*, and so on. It dispatches a **COMMAND** to one or more **SUBSYSTEMS**, each of which is resposible for a single concern regarding the host. **SUBSYSTEMS** are NOT specific binaries (but they can be), they are *logical parts of a host* that you want you manage.
 
-- [About](#about)
-- [Repo Structure](#repo-structure)
-- [Getting Started](#getting-started)
-- [Get Involved](#get-involved)
-- [Contact](#contact)
-- [License](#license)
+For example, the **ssh subsystem** includes not only **ssh**(1), but **sshd**(8), as well as their respective configuration files, like */etc/ssh/sshd_config*, or even ensuring *~/.ssh* has the proper **700** permissions through **chmod**(1). See **SUBSYSTEMS** for more info.
 
-## About
+If no **COMMAND** is specified, **COMMAND** defaults to **show** or **ls**, depending on whether a **HOST** is provided, and the **SUBSYSTEM**.
 
-The Cybersecurity and Intel Club (CIC) at RWU is a student organization for anyone interested in security, offensive/defensive tooling, CTFs, and intelligence analysis. This repo is our shared workspace: a place for members to prototype, collaborate, and graduate ideas into full projects.
+If no **HOST** is specified, **HOST** defaults to the local machine.
 
-- Club page: [HawkLink](https://hawklink.rwu.edu/organization/cybersecurity-intel)
-- Org: [github.com/cic-rwu](https://github.com/cic-rwu)
+**cicdaemon** itself has two purposes:
 
-## Repo Structure
-```
-cic-rwu/
-├── bin/        # Shared shell scripts used across club projects
-└── README.md
-```
+- Bring newly-provisioned virtual machines to a known baseline
 
-- **`bin/`** — Shared shell scripts (setup, tooling, utilities) reused across multiple club projects. If you're writing a script more than one project will need, it belongs here rather than duplicated per-project.
+- Verify they stay there
 
-As individual projects mature, they're extracted into their own repo in the [cic-rwu org](https://github.com/orgs/cic-rwu/repositories) and linked back here.
+The desired state is read from the inventory file at **/etc/cicdaemon/inventory.yaml**, and parsed with **yq**(1). Host details should never be hard-coded in the handlers or the dispatcher itself.
 
-## Getting Started
+# COMMANDS
 
-1. Clone the repo:
-   ```
-   git clone https://github.com/cic-rwu/cic-rwu.git
-   cd cic-rwu
-   ```
-2. Source or run scripts from `bin/` as needed for your project setup.
-3. Starting something new? Add it as a new top-level folder. Open an issue or bring it to a meeting first if you want feedback on scope/direction.
+**init** [*SUBSYSTEM* ...]
 
-## Get Involved
+Run a *SUBSYSTEM*'s init phase (if applicable). If no *SUBSYSTEM*, initialize all **SUBSYSTEMS**.
 
-New members are always welcome, no experience required.
+**ls** (PLANNED)
 
-- Join via [HawkLink](https://hawklink.rwu.edu/organization/cybersecurity-intel)
-- Browse [open issues](https://github.com/cic-rwu/cic-rwu/issues) for project ideas to jump into
-- Ask in a meeting or email us (below) about access to the org
+List active subsystems 
 
-## Contact
+**audit** (PLANNED)
 
-- Email: [cic@g.rwu.edu](mailto:cic@g.rwu.edu)
-- HawkLink: [hawklink.rwu.edu/organization/cybersecurity-intel](https://hawklink.rwu.edu/organization/cybersecurity-intel)
+Run all **SUBSYSTEMS** in **audit** mode.
 
-## License
+# SUBSYSTEMS
 
-Distributed under the [GPLv3](LICENSE).
+A **SUBSYSTEM** is a specific area of concern on a host, not the *binary* or *script* that implements it.
+*That does not necessarily mean a subsystem can't be a specific binary*, just that subsystems should never be thought of as a binary themselves. Documentation, and even in-line comments are key here, since I want to keep this modular.
+
+Each subsystem will be marked with one of (**audit**, **enforce**), (**audit**), or (**enforce**), which represents what the subsystem is capable of.
+
+**audit mode** means a subsystem will report issues, but will not attempt or prompt you to reconcile those issues.
+
+**enforce mode** means a subsystem will attempt to reconcile an issue, if it is capable of doing so.
+
+**ssh** (**audit**, **enforce**)
