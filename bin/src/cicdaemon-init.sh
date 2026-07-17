@@ -1,16 +1,4 @@
 #!/bin/bash
-#==========================================================
-#
-#       FILE:           bin/cicdaemon
-#       USAGE:          cicdaemon bootstrap
-#       DESCRIPTION:    Script to automate bootstrapping host configurations
-#
-#       AUTHOR:         MXHML (mxhml@proton.me)
-#       VERSION:        1.0.2
-#       CREATED:        July 14, 2026
-#       REVISION:       1
-#
-#==========================================================
 set -o errexit
 set -o pipefail
 HELPMSG=$(cat <<HELPMSG
@@ -37,14 +25,16 @@ finish(){
 trap finish EXIT ERR
 START_TIME=$(date +%s%N)
 TMPFILE="$(mktemp)"
+
 init() {
-	#[ "${EUID}" -ne 0 ] && echo "cicdaemon-init: Bad permissions. Are you root?" && exit 1
+	[ "${EUID}" -ne 0 ] && echo "cicdaemon-init: Bad permissions. Are you root?" && exit 1
 	if mkdir --parents /opt/cicdaemon/log /opt/cicdaemon/bin 2> "${TMPFILE}"; then
 		:
 	else
 		echo -e "cicdaemon-init: failed to initialize required directories.\nstderr dump:"
 		cat "${TMPFILE}"
 	fi
+
 	machine-id(){
 		#reset and log /etc/machine-id and re-link /var/lib/dbus/machine-id to it
 		rm --force /etc/machine-id /var/lib/dbus/machine-id
@@ -55,11 +45,12 @@ init() {
 				echo "Generated CIC_UUID: [$CIC_UUID]"
 				xattr -w trusted.cicdaemon.sha1 "$CIC_UUID"
 				echo "$CIC_UUID" > /etc/cic-id
+				chattr -i /etc/cic-id
 				echo "machine-id: OK"
 				return 0
 			fi
 		else 
-			log error "Failed to symlink /etc/machine-id to /var/lib/dbus/machine-id"; exit 1
+			echo "Failed to symlink /etc/machine-id to /var/lib/dbus/machine-id"; return 1
 		fi
 	}
 
@@ -96,4 +87,9 @@ init() {
 			fi
 		fi
 	}
-};init
+
+	machine-id
+	copy-daemon-hostkey
+	generate-hostkeys
+
+}; init "$@"
