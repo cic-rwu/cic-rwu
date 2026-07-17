@@ -6,14 +6,6 @@
 ![branch main](https://img.shields.io/badge/branch-cicdaemon-green?style=flat-square)
 ![last commit](https://img.shields.io/github/last-commit/cic-rwu/cic-rwu/cicdaemon?display_timestamp=committer&style=flat&label=last%20commit)
 
----
-title: cicdaemon
-section: 8
-date: July 14 2026
-header: CIC Commands Manual
-footer: cicdaemon 1.1
----
-
 # NAME
 
 | cicdaemon -- CIC host management and compliance daemon
