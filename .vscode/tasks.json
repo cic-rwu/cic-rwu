@@ -2,9 +2,9 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build-mp",
+            "label": "build-bash",
             "type": "shell",
-            "command": "pandoc --standalone --to man ${file} -o ${fileDirname}/8/${fileBasenameNoExtension} && echo 'TASK OK. (EXIT 0)'",
+            "command": "shc -f ${file} -o bin/${fileBasenameNoExtension}",
             "group": {
                 "kind": "build",
                 "isDefault": false
@@ -18,7 +18,7 @@
                 "clear": true
             },
             "problemMatcher": [],
-            "detail": "Compile the active Markdown file into a groff man page with Pandoc."
+            "detail": "Encrypt shell file in C wrapper with shc"
         }
     ]
 }

@@ -1,8 +1,7 @@
 #!/bin/bash
-
 HELPMSG=$( cat <<'HELPMSG'
 USAGE
-  $0 [LEVEL] [message]... {*file* ...}
+  $0 [LEVEL] [message]
 
 DESCRIPTION
   prepend and format <\${EPOCHREALTIME}>, <\${FUNCNAME[1]}> to LEVEL [message]...
@@ -15,14 +14,11 @@ NOTES
   ciclog v1.0.5
 HELPMSG
 )
-
 ciclog() {
   local caller="${FUNCNAME[1]}"
   local calltime="${EPOCHREALTIME}"
   local label="${1}"
   local message="${2}"
   local format="[%s] %s: [%s]: %s"
-  
   printf "${format}" "${calltime}" "${caller}" "${label}" "${message}"
-};
-ciclog "$@"
+};ciclog "$@"
