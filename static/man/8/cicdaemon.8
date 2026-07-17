@@ -6,74 +6,110 @@
 cicdaemon \(en CIC host management and compliance daemon
 .SH SYNOPSIS
 .PP
-cicdaemon < \f[I]COMMAND\f[R] > [ \f[I]OPTION\f[R] ] [ \f[I]HOST\f[R]
-\&...
-] < \f[I]SUBSYSTEM\f[R] > \&...
+cicdaemon [\f[I]SUBSYSTEM\f[R] [\f[I]SUBSYSTEM OPTION\f[R]]]
 .SH DESCRIPTION
-\f[B]cicdaemon\f[R] is an orchestrator script for a \f[B]HOST\f[R]\(cqs
-given \f[B]SUBSYSTEM\f[R], like its \f[I]identity\f[R],
-\f[I]network\f[R], \f[I]dns\f[R], \f[I]time\f[R], \f[I]ssh\f[R], and so
-on.
-It dispatches a \f[B]COMMAND\f[R] to one or more \f[B]SUBSYSTEMS\f[R],
-each of which is resposible for a single concern regarding the host.
-\f[B]SUBSYSTEMS\f[R] are NOT specific binaries (but they can be), they
-are \f[I]logical parts of a host\f[R] that you want you manage.
+.TP
+\f[B]cicdaemon\f[R] is an orchestrator script that executes a \f[I]COMMAND\f[R] on a hosts given \f[I]SUBSYSTEM\f[R], like its \f[I]identity\f[R], \f[I]network\f[R], \f[I]dns\f[R], \f[I]time\f[R], \f[I]ssh\f[R], and so on.
+Logically, this is similar to something like \f[B]ansible\f[R], except
+ansible is too abstraced for me :)
 .PP
-For example, the \f[B]ssh subsystem\f[R] includes not only
-\f[B]ssh\f[R](1), but \f[B]sshd\f[R](8), as well as their respective
-configuration files, like \f[I]/etc/ssh/sshd_config\f[R], or even
-ensuring \f[I]\(ti/.ssh\f[R] has the proper \f[B]700\f[R] permissions
-through \f[B]chmod\f[R](1).
-See \f[B]SUBSYSTEMS\f[R] for more info.
+\f[B]SUBSYSTEMS\f[R] may entail \f[I]files\f[R], \f[I]directories\f[R],
+\f[I]binaries\f[R], or even connection protocols like \f[B]ssh\f[R](1).
+At the end of the day, like \f[B]cicdaemon\f[R] itself,
+\f[B]SUBSYSTEMS\f[R] are all just \f[B]bash\f[R](1) scripts,
+\f[B]cicdaemon\f[R] is just a way to interact with (and make them
+interact with each other) easier.
 .PP
-If no \f[B]COMMAND\f[R] is specified, \f[B]COMMAND\f[R] defaults to
-\f[B]show\f[R] or \f[B]ls\f[R], depending on whether a \f[B]HOST\f[R] is
-provided, and the \f[B]SUBSYSTEM\f[R].
+The difference, however, is that \f[B]cicdaemon\f[R] is able to help the
+user (typically an administrator), interpret and reconsile issues in
+these subsystems.
+While the subsystems by themselves may be able to report on an issue,
+that does not necessarily mean it is able to reconsile that issue.
+.PD 0
+.P
+.PD
+This setup is mostly for modularity, since it makes it easier to add and
+remove scripts.
+Better conventions will be implemented as\-needed.
 .PP
-If no \f[B]HOST\f[R] is specified, \f[B]HOST\f[R] defaults to the local
-machine.
+The \(lqsource of truth\(rq for host configurations is the inventory
+file at \f[I]/opt/cicdaemon/inventory.yaml\f[R].
+.PD 0
+.P
+.PD
+See \f[B]cicdaemon \-\-help inventory\f[R] for more information.
 .PP
-\f[B]cicdaemon\f[R] itself has two purposes:
-.IP \(bu 2
-Bring newly\-provisioned virtual machines to a known baseline
-.IP \(bu 2
-Verify they stay there
-.PP
-The desired state is read from the inventory file at
-\f[B]/etc/cicdaemon/inventory.yaml\f[R], and parsed with
-\f[B]yq\f[R](1).
-Host details should never be hard\-coded in the handlers or the
-dispatcher itself.
-.SH COMMANDS
-\f[B]init\f[R] [\f[I]SUBSYSTEM\f[R] \&...]
-.PP
-Run a \f[I]SUBSYSTEM\f[R]\(cqs init phase (if applicable).
-If no \f[I]SUBSYSTEM\f[R], initialize all \f[B]SUBSYSTEMS\f[R].
-.PP
-\f[B]ls\f[R]
-.PP
-List active subsystems
-.PP
-\f[B]audit\f[R]
-.PP
-Run all \f[B]SUBSYSTEMS\f[R] in \f[B]audit\f[R] mode.
+If no \f[B]COMMAND\f[R] is specified, \f[B]COMMAND\f[R] defaults to the
+\f[B]SUBSYSTEM\f[R]\(cqs \f[I]mode\f[R]
+.PD 0
+.P
+.PD
+Otherwise, \f[B]COMMAND\f[R] defaults to \f[B]show\f[R] or \f[B]ls\f[R],
+depending on the context.
+.PD 0
+.P
+.PD
+See \f[B]SUBSYSTEMS\f[R] and \f[B]SUBSYSTEM MODES\f[R] for more info.
 .SH SUBSYSTEMS
-A \f[B]SUBSYSTEM\f[R] is a specific area of concern on a host, not the
-\f[I]binary\f[R] or \f[I]script\f[R] that implements it.
-\f[I]That does not necessarily mean a subsystem can\(cqt be a specific
-binary\f[R], just that subsystems should never be thought of as a binary
-themselves.
-Documentation, and even in\-line comments are key here, since I want to
-keep this modular.
+A \f[B]SUBSYSTEM\f[R] is a \f[I]logical area of the host you want to
+manage\f[R].
+.PD 0
+.P
+.PD
+Each subsystem is a smaller \f[B]bash\f[R](1) script that will interact
+with the necessary packages, files, directories, etc.
+to match the configuration defined at
+\f[I]/opt/cicdaemon/config.yaml\f[R].
 .PP
-Each subsystem will be marked with one of (\f[B]audit\f[R],
-\f[B]enforce\f[R]), (\f[B]audit\f[R]), or (\f[B]enforce\f[R]), which
-represents what the subsystem is capable of.
+Below is the description, valid arguments, and available \f[B]SUBSYSTEM
+MODE\f[R] (\f[B]boldface in parenthesis\f[R]) for each subsystem.
+.TP
+\f[B]show\f[R] [\f[B]active\f[R] | \f[B]all\f[R] | \f[I]subsystem\f[R]]
+List \f[B]active\f[R] or \f[B]all\f[R] subsystems, or show details about
+a specific \f[I]subsystem\f[R]
+.TP
+\f[B]init\f[R] [\f[I]subsystem\f[R] \&...] (\f[B]AUDIT\f[R])
+Run the \f[B]init\f[R] subsystem on \f[I]subsystem\f[R]
+.RS
 .PP
-\f[B]audit mode\f[R] means a subsystem will report issues, but will not
-attempt or prompt you to reconcile those issues.
+\f[B]init\f[R] is effectively the subsystem for subsystems, in which it
+checks \f[I]subsystems themselves\f[R], by sourcing the
+\f[CR]init()\f[R] function for the \f[I]subsystem\f[R].
+The init function for a subsystem typically installs packages, creates
+directories, and so on, that the subsystem requires to function.
+\f[B]cicdaemon\f[R] itself is a good example of this.
+See \f[CR]cicdaemon\-init.sh\f[R] for an example.
+.RE
+.TP
+\f[B]audit\f[R] [\f[I]subsystem\f[R] \&...]
+Set \f[I]subsystem\f[R]\(cqs \f[B]mode\f[R] to \f[B]audit\f[R] and run
+the \f[I]subsystem\f[R]
+.RS
 .PP
-\f[B]enforce mode\f[R] means a subsystem will attempt to reconcile an
-issue, if it is capable of doing so.
-.PP
-\f[B]ssh\f[R] (\f[B]audit\f[R], \f[B]enforce\f[R])
+Similar to \f[B]init\f[R], if no subsystem is specified, default to all
+\f[B]SUBSYSTEMS\f[R]
+.PD 0
+.P
+.PD
+If \f[I]SUBSYSTEM\f[R] does not have an \f[B]audit\f[R] mode, it will
+also be treated as a config error
+.RE
+.TP
+\f[B]enforce\f[R] [\f[I]subsystem\f[R] \&...]
+Set \f[I]subsystem\f[R]\(cqs \f[B]mode\f[R] to \f[B]enforce\f[R] and run
+the \f[I]subsystem\f[R]
+.TP
+\f[B]getmode\f[R] [\f[I]active\f[R] | \f[I]all\f[R]] \f[I]subsystem\f[R]
+Get the current and possible \f[I]modes\f[R] for \f[I]subsystem\f[R]
+.SS SUBSYSTEM MODES
+Most subsystems support different \f[I]modes\f[R], depending on what
+you\(cqre trying to achieve
+.TP
+\f[B]init\f[R]
+\f[CR]Initialization phase if the subsystem has required packages, directories, etc.\f[R]
+.TP
+\f[B]audit\f[R]
+\f[CR]Read\-only mode. Will print warnings about improper configurations, but won\(aqt attempt to reconcile them\f[R]
+.TP
+\f[B]enforce\f[R]
+\f[CR]Effectively a ripoff from selinux, this will attempt to fix reported issues from subsystems\f[R]

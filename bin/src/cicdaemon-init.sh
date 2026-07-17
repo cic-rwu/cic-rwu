@@ -1,18 +1,24 @@
 #!/bin/bash
 set -o errexit
 set -o pipefail
-HELPMSG=$(cat <<HELPMSG
-cicdaemon -- CIC host management and compliance daemon
+HELPMSG=$(cat <<'HELPMSG'
+cicdaemon init -- Initialize cicdaemon on new hosts
 USAGE
-  cicdaemon < *COMMAND* > [ *OPTION* ] [ *HOST* ... ] < *SUBSYSTEM* > ...
+  cicdaemon init {*SUBSYSTEM} ...
 DESCRIPTION
-	**cicdaemon** is an orchestrator script for a **HOST**'s given **SUBSYSTEM**, 
-	like its *identity*, *network*, *dns*, *time*, *ssh*, and so on. 
+	**cicdaemon init** initializes `cicdaemon` on newly provisioned hosts
 
-#$0
-#https://github.com/mxhml
-#https://github.com/cic-rwu/cic-rwu
-ciclog v1.0.4
+	If the host you are trying to provision did not come from the PVE template,
+	this script may not work as expected, but it is intended to.
+	For full usage, run `man cicdaemon`
+
+	If you have issues, please report them on the github repository at:
+	https://github.com/cic-rwu/cic-rwu/tree/cicdaemon
+
+AUTHOR
+	https://github.com/mxhml
+
+cicdaemon-init dev-1.0.3
 HELPMSG
 )
 finish(){
@@ -83,13 +89,17 @@ init() {
 				echo "generate-hostkeys: OK"
 				echo "host ED25519 fingerprint:"
 				ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
+				echo "generate-hostkeys: OK"
 				return 0
 			fi
 		fi
 	}
 
-	machine-id
-	copy-daemon-hostkey
-	generate-hostkeys
-
+	if machine-id; then if copy-daemon-hostkey; then generate-hostkeys; fi;fi
 }; init "$@"
+
+[[ ${#} -gt 0 || "${1}" == "-h" || "${1}" == "--help" ]] && {
+	echo "cicdaemon-init: too many arguments recieved! expected 0, but got ${#}"
+	echo "${HELPMSG}"
+	exit 2
+}

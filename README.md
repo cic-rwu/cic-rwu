@@ -58,3 +58,24 @@ Each subsystem will be marked with one of (**audit**, **enforce**), (**audit**),
 **enforce mode** means a subsystem will attempt to reconcile an issue, if it is capable of doing so.
 
 **ssh** (**audit**, **enforce**)
+
+# EXIT CODES
+In general, this script follows the exit codes defined in `sysexits.h`,
+with the exception of using *1* instead of *64* as a catch-all exit code, 
+since *1* is better-known.
+
+Additionally, like `sysexits.h`, we have defined some exit status variables
+to make debugging easier
+
+However, it should be noted these variables are NOT exported. They are used internally,
+and are only displayed and handled by `ciclog`.
+
+Outside of **0** and **1**, specific exit codes will start at **64**
+See `man sysexits.h` for more info
+
+| **0**       **EX_OK**       **Success**
+
+**1**       Catchall for general errors, see output for more info
+
+**64**      Bad response from **SUBSYSTEM** handler
+**65**      Data format error (expected *string* but got *path*, etc.)
