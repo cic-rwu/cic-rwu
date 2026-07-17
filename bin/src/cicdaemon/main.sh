@@ -9,7 +9,7 @@
 HELPMSG=$( cat <<'HELPMSG'
 cicdaemon -- CIC host management and compliance daemon
 USAGE
-  cicdaemon < *COMMAND* > [ *OPTION* ] [ *HOST* ... ] < *SUBSYSTEM* > ...
+  cicdaemon *SUBSYSTEM* [*SUBSYSTEM* [*SUBSYSTEM*]...]
 DESCRIPTION
 	**cicdaemon** is an orchestrator script for a **HOST**'s given **SUBSYSTEM**, 
 	like its *identity*, *network*, *dns*, *time*, *ssh*, and so on. 
@@ -32,12 +32,3 @@ finish(){
 trap finish EXIT ERR
 START_TIME=$(date +%s%N)
 TMPFILE="$(mktemp)"
-
-check-opts() {
-  for opt in "${@}"; do
-    case "${opt}" in
-      init)
-        echo "Initializing cicdaemon..."
-    esac
-  done
-}
