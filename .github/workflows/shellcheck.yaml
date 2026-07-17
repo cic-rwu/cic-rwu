@@ -15,6 +15,6 @@ jobs:
       - name: shellcheck lint
         uses: ludeeus/action-shellcheck@master
         with:
-          scandir: './bin'
+          scandir: 'bin/src'
           severity: error
           format: gcc
