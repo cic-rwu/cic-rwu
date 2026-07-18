@@ -1,0 +1,7 @@
+*								@cic-rwu/officers
+static/images/					@cic-rwu/officers
+README.md						@cic-rwu/officers
+profile/*						@cic-rwu/officers
+workflows/shellcheck.yaml		@MXHML
+bin/cicdaemon					@MXHML
+bin/ciclogger					@MXHML

@@ -4,22 +4,45 @@
 [![issues](https://img.shields.io/github/issues/cic-rwu/cic-rwu?style=plastic)](https://github.com/cic-rwu/cic-rwu/issues)
 ![Discord](https://img.shields.io/discord/844745465391874078?style=plastic&logo=discord&logoColor=white&logoSize=auto&label=Discord&labelColor=%235865F2&color=%235865F2)
 
+<div style="display: flex;flex-direction:column;align-items:flex-start;">
+
 ![main branch workflow status](https://img.shields.io/github/actions/workflow/status/cic-rwu/cic-rwu/shellcheck.yaml?branch=main&style=flat-square&logo=git&logoSize=auto&label=main)![main last commit](https://img.shields.io/github/last-commit/cic-rwu/cic-rwu/main?style=flat-square)
 
 ![dev branch workflow status](https://img.shields.io/github/actions/workflow/status/cic-rwu/cic-rwu/shellcheck.yaml?branch=dev&style=flat-square&logo=git&logoSize=auto&label=dev)![dev last commit](https://img.shields.io/github/last-commit/cic-rwu/cic-rwu/dev?style=flat-square)
 
 </div>
-
+</div>
 <p align="center">
-  <img src="static/images/cic-base.svg" alt="RWU Cybersecurity and Intel Club banner" width="400" height="400">
+  <img src="../static/images/cic-base.svg" alt="RWU Cybersecurity and Intel Club banner" width="400" height="400">
 </p>
 
->This repo is still a work in progress! If you have suggestions, please see [Contact](#contact) to send us an email, or submit an [issue](https://github.com/cic-rwu/cic-rwu/issues) on Github!
+<div>
+<style>
+  h1{
+    text-align:center;
+    border-bottom:none; !important
+    text-decoration:none; !important
+    padding:none; !important
+    font-family: sans-serif;
+  font-weight: 550;
+  font-style: normal;
+  }
+  h3,h5 {
+    margin-top:-10px;
+    text-align:center;
+    font-weight:400;
+    opacity:0.7;
+    padding:none; !important
+  }
+</style>
+<h1>CYBERSECURITY AND INTEL CLUB</h1>
+<h3>ROGER WILLIAMS UNIVERSITY</h3>
+</div>
 
-# Cybersecurity and Intel Club at RWU
+## Table of Contents
 
 - [About](#about)
-- [Repo Structure](#repo-structure)
+- [Repositories](#repo-structure)
 - [Getting Started](#getting-started)
 - [Get Involved](#get-involved)
 - [Contact](#contact)
@@ -27,11 +50,11 @@
 
 ## About
 
-Welcome to the repository! Here you'll find technical documentation, programs, and other miscellaneous files we decided to version control.
+Welcome to the Github organization for [Roger Williams University](https://rwu.edu)'s Cybersecurity and Intel Club!
 
-For documentation thats a little more polished, see the [organization's page](https://github.com/cic-rwu).
+We are a student-run club based in Bristol, Rhode Island, that meets weekly to discuss cyber news, attend professional conferences (DEFCON, Hackfest, etc.,) as well as present bi-weekly hands-on demonstrations!
 
-To avoid creating a separate repository for every small project we work on, most projects will start here as a branch, and gets forked as-needed.
+If you're looking for code we've written, or more technical documentation in general, see the [repository](https://github.com/cic-rwu/cic-rwu).
 
 ## Getting Started
 
