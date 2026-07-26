@@ -17,24 +17,7 @@
 </p>
 
 <div>
-<style>
-  h1{
-    text-align:center;
-    border-bottom:none; !important
-    text-decoration:none; !important
-    padding:none; !important
-    font-family: sans-serif;
-  font-weight: 550;
-  font-style: normal;
-  }
-  h3,h5 {
-    margin-top:-10px;
-    text-align:center;
-    font-weight:400;
-    opacity:0.7;
-    padding:none; !important
-  }
-</style>
+
 <h1>CYBERSECURITY AND INTEL CLUB</h1>
 <h3>ROGER WILLIAMS UNIVERSITY</h3>
 </div>
@@ -54,7 +37,25 @@ Welcome to the Github organization for [Roger Williams University](https://rwu.e
 
 We are a student-run club based in Bristol, Rhode Island, that meets weekly to discuss cyber news, attend professional conferences (DEFCON, Hackfest, etc.,) as well as present bi-weekly hands-on demonstrations!
 
+This organization hosts all of the club's open-source projects including:
+
+- Workshop material
+- Scripts and automation
+- Competition resources
+- Club documentation
+- Infrastructure
+- Student projects
+
 If you're looking for code we've written, or more technical documentation in general, see the [repository](https://github.com/cic-rwu/cic-rwu).
+
+## Mission
+Our mission is to provide students with practical hands on cybersecurity experience through:
+
+- Workshops
+- Competitions
+- Open source development
+- Research
+- Professional networking
 
 ## Getting Started
 
