@@ -1,0 +1,76 @@
+name: Create provisioning issues from cic-rwu in cic-rwu/pve
+
+on:
+  issues:
+    types:
+      - opened
+
+permissions:
+  issues: write
+
+env:
+  TARGET_OWNER: cic-rwu
+  TARGET_REPO: pve
+
+jobs:
+  relay:
+    if: startsWith(github.event.issue.title, 'provision:')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get app token
+        id: app-token
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ vars.CICD_APP_CLIENT_ID }}
+          private-key: ${{ secrets.CICD_ACTIONS_KEY }}
+          owner: ${{ env.TARGET_OWNER }}
+          repositories: ${{ env.TARGET_REPO }}
+          permission-issues: write
+      
+      - name: Check for existing issue
+        id: existing
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          TARGET: ${{ env.TARGET_OWNER }}/${{ env.TARGET_REPO }}
+          SRC_REF: ${{ github.repository }}#${{ github.event.issue.number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          url="$(gh issue list --repo "$TARGET" --state all --limit 1 \
+                   --search "\"relay-source: $SRC_REF\" in:body" \
+                   --json url --jq '.[0].url // empty')"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+      
+      - name: Create issue in pve
+        id: create
+        if: steps.existing.outputs.url == ''
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          TARGET: ${{ env.TARGET_OWNER }}/${{ env.TARGET_REPO }}
+          SRC_TITLE: ${{ github.event.issue.title }}
+          SRC_BODY: ${{ github.event.issue.body }}
+          SRC_URL: ${{ github.event.issue.html_url }}
+          SRC_USER: ${{ github.event.issue.user.login }}
+          SRC_REF: ${{ github.repository }}#${{ github.event.issue.number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          body="$(printf '%s\n\n---\nrelay-source: %s\nOpened by @%s - %s\n' \
+                    "${SRC_BODY:-_No description provided._}" \
+                    "$SRC_REF" "$SRC_USER" "$SRC_URL")"
+          # Add `--label provisioning` only if that label exists in the target
+          # repo; gh errors out on an unknown label.
+          url="$(gh issue create --repo "$TARGET" --title "$SRC_TITLE" --body "$body")"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Comment link on source issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SRC_REPO: ${{ github.repository }}
+          SRC_NUM: ${{ github.event.issue.number }}
+          NEW_URL: ${{ steps.create.outputs.url || steps.existing.outputs.url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh issue comment "$SRC_NUM" --repo "$SRC_REPO" \
+            --body "Provisioning request tracked at ${NEW_URL}"
