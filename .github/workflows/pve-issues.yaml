@@ -1,4 +1,4 @@
-name: copy provisioning issues from cic-rwu in cic-rwu/pve
+name: Create provisioning issues from cic-rwu in cic-rwu/pve
 
 on:
   issues:
