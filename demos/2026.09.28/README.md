@@ -8,7 +8,7 @@ Login with the address or hostname provided to you:
 ssh cic-guest@{container IP}
 ```
 - This container is yours to break
-- Each task gives you a goal and a hint, not the answer. If you're stuck, try `man {command}` or `{command} --help`
+- Each task gives you a goal and a hint. If you're stuck, try `man {command}` or `{command} --help`
 - Really stuck? Ask one of the officers for assistance
 - Keep track of your found flags at the bottom of this document
 
@@ -60,7 +60,7 @@ ___
 
 ### 3.1 - Locked Out
 
-> `~/locked.txt` is your file, but `cat` says *permission denied*.
+> `~/locked.txt` is your file, but `cat` says *permission denied*. Fix the permissions for the key to the next flag.
 
 *Hint*: `ls -l` shows permissions, `chmod u+r` gives the owner read access
 
