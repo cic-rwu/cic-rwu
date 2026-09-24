@@ -1,0 +1,45 @@
+flags:
+  - path: ~/welcome/flag.txt
+    flag: CIC{h311o_sh311}
+  
+  - path: ~/.secret_flag
+    flag: CIC{d0t_f1l3s}
+  
+  - path: /opt/cic/maze/2/0/0/7/flag.txt
+    flag: CIC{t4b_c0mpl3t3}
+    notes: |
+      2007 is when the Cybersecurity program was founded at RWU :)
+
+  - path: /opt/cic/haystack.txt
+    flag: CIC{t41l_3nd}
+    notes: |
+      haystack.txt needs ~ 5,000 filler lines **before** the flag
+  
+  - path: /opt/cic/haystack.txt
+    flag: CIC{n33dl3_f0und}
+    notes: |
+      10,000 filler lines, flag is on a random line
+  
+  - path: /usr/share/misc/lost_flag.txt
+    flag: CIC{f1nd_1t}
+    notes: |
+      readable by `student`
+  
+  - path: ~/locked.txt
+    flag: CIC{chm0d_r34d}
+    notes: |
+      owned by student, mode 000
+  
+  - path: ~/.run_me.sh
+    flag: CIC{x_b1t_s3t}
+    notes: |
+      script should take the input of previous flag to verify
+  
+  - path: /opt/cic/words.txt
+    flag: CIC{<count>}
+    notes: |
+      variable number of lines containing the word `tux`
+      tux is the linux mascot :)
+  
+  - path: /etc/systemd/system/bonus-flag.service
+    flag: CIC{ps_4ux}
