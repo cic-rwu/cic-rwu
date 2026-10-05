@@ -3,4 +3,4 @@ __pycache__/
 .pytest_cache/
 state.json
 tests/
-!.venv/
+.venv/
