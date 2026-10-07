@@ -1,0 +1,25 @@
+[project]
+name = "jeopardy"
+version = "0.1.0"
+description = "Multiplayer Jeopardy for the terminal (plain ASCII/box-drawing, no special fonts)"
+requires-python = ">=3.11"
+dependencies = ["textual>=0.80", "pydantic>=2", "pyyaml"]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-asyncio"]
+
+[project.scripts]
+jeopardy-server = "jeopardy.server:main"
+jeopardy-client = "jeopardy.client.app:main"
+jeopardy-validate = "jeopardy.loader:validate_main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"

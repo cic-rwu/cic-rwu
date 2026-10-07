@@ -1,0 +1,109 @@
+title: Sample Game
+categories:
+- name: Science
+  clues:
+  - value: 200
+    clue: This planet is known as the Red Planet
+    answer: What is Mars?
+  - value: 400
+    clue: H2O is the chemical formula for this
+    answer: What is water?
+  - value: 600
+    clue: This force keeps planets in orbit around the Sun
+    answer: What is gravity?
+  - value: 800
+    clue: The powerhouse of the cell
+    answer: What is the mitochondrion?
+  - value: 1000
+    clue: This element has atomic number 79
+    answer: What is gold?
+- name: Geography
+  clues:
+  - value: 200
+    clue: The longest river in South America
+    answer: What is the Amazon?
+  - value: 400
+    clue: Capital of Australia
+    answer: What is Canberra?
+  - value: 600
+    clue: The smallest continent by land area
+    answer: What is Australia/Oceania?
+    daily_double: true
+  - value: 800
+    clue: This desert is the largest hot desert on Earth
+    answer: What is the Sahara?
+  - value: 1000
+    clue: Mount Everest sits on the border of Nepal and this country
+    answer: What is China (Tibet)?
+- name: Movies
+  clues:
+  - value: 200
+    clue: This 1994 film features Tom Hanks saying 'Life is like a box of chocolates'
+    answer: What is Forrest Gump?
+  - value: 400
+    clue: Director of Jaws and E.T.
+    answer: Who is Steven Spielberg?
+  - value: 600
+    clue: The ship in this 1997 film sank on its maiden voyage
+    answer: What is Titanic?
+  - value: 800
+    clue: Darth Vader's famous line begins 'I am your...'
+    answer: What is father?
+  - value: 1000
+    clue: This 1999 film asks you to choose the red pill or the blue pill
+    answer: What is The Matrix?
+- name: Computing
+  clues:
+  - value: 200
+    clue: This language is named after a British comedy troupe, not a snake
+    answer: What is Python?
+  - value: 400
+    clue: HTTP status code for 'Not Found'
+    answer: What is 404?
+  - value: 600
+    clue: Linus Torvalds created this kernel
+    answer: What is Linux?
+  - value: 800
+    clue: Binary for the decimal number 5
+    answer: What is 101?
+  - value: 1000
+    clue: The 'S' in SSH stands for this word
+    answer: What is Secure?
+- name: Food
+  clues:
+  - value: 200
+    clue: Italian dish of thin dough, tomato sauce and cheese
+    answer: What is pizza?
+  - value: 400
+    clue: This spice is the world's most expensive by weight
+    answer: What is saffron?
+  - value: 600
+    clue: Sushi is traditionally wrapped in this seaweed
+    answer: What is nori?
+  - value: 800
+    clue: Guacamole is mainly made from this fruit
+    answer: What is avocado?
+  - value: 1000
+    clue: Japanese soy-based fermented paste used in soup
+    answer: What is miso?
+- name: Words
+  clues:
+  - value: 200
+    clue: The study of word origins
+    answer: What is etymology?
+  - value: 400
+    clue: Plural of 'mouse' the animal
+    answer: What is mice?
+  - value: 600
+    clue: Opposite of 'ancient'
+    answer: What is modern?
+  - value: 800
+    clue: Synonym for 'big', starting with H
+    answer: What is huge?
+  - value: 1000
+    clue: A word for a word that means the opposite of another
+    answer: What is an antonym?
+final:
+  category: World Capitals
+  clue: This city has been the capital of Japan since 1868
+  answer: What is Tokyo?
