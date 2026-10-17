@@ -1,0 +1,104 @@
+title: CIC Jeopardy
+categories:
+- name: Pentesting
+  clues:
+  - value: 100
+    clue: This term describes a weakness of a system that could be exploited.
+    answer: What is a vulnerability?
+  - value: 200
+    clue: This term describes finding hidden directories, passwords, or files on a web server by guessing names from a predefined wordlist.
+    answer: What is brute-forcing?
+  - value: 300
+    clue: This mechanism is installed by a tester to maintain future access to a compromised system.
+    answer: What is a backdoor?
+  - value: 400
+    clue: This active reconnaissance tool is used to scan networks for open ports, services, and operating systems.
+    answer: What is Nmap?
+  - value: 500
+    clue: This process is used to elevate a standard user shell to root or administrator status.
+    answer: What is privilege escalation?
+- name: Digital Forensics
+  clues:
+  - value: 100
+    clue: This term describes the process of making an exact, bit-for-bit copy of a drive so investigators can work on the copy instead of the original.
+    answer: What is a forensic image/disk image?
+  - value: 200
+    clue: This documentation tracks who handled a piece of evidence, when, and why, so it holds up in court.
+    answer: What is the chain of custody?
+  - value: 300
+    clue: Investigators use this device, placed between a suspect drive and the forensic workstation, to prevent any accidental changes to the original data.
+    answer: What is a write blocker?
+  - value: 400
+    clue: Comparing these fixed-length values, produced by algorithms like SHA-256, proves a forensic copy matches the original drive.
+    answer: What are hash values (or hashes)?
+  - value: 500
+    clue: Attackers sometimes hide data inside image files using this technique, which differs from encryption because it conceals the existence of the message.
+    answer: What is steganography?
+- name: Windows
+  clues:
+  - value: 100
+    clue: This keyboard shortcut instantly locks a Windows workstation.
+    answer: What is Win + L?
+  - value: 200
+    clue: In Active Directory, this type of server authenticates users and stores the directory database.
+    answer: What is a domain controller?
+  - value: 300
+    clue: Active Directory's default authentication protocol is named after this three-headed dog of Greek myth.
+    answer: What is Kerberos?
+  - value: 400
+    clue: This Sysinternals tool lists everything configured to run at startup, including scheduled tasks, services, and Run keys, making it a favorite for hunting persistence.
+    answer: What is Autoruns?
+  - value: 500
+    clue: Name any two of the five FSMO roles.
+    answer: "Any two of: Schema Master, Domain Naming Master, RID Master, PDC Emulator, Infrastructure Master"
+- name: Cloud Computing
+  clues:
+  - value: 100
+    clue: This cloud service model provides virtual machines, storage, and networking while the customer manages the operating system and applications.
+    answer: What is IaaS (Infrastructure as a Service)?
+  - value: 200
+    clue: In this cloud deployment model, computing resources are shared among many customers over the internet.
+    answer: What is a Public Cloud?
+  - value: 300
+    clue: This cloud feature allows resources to automatically increase or decrease based on workload demand.
+    answer: What is elasticity?
+  - value: 400
+    clue: AWS, Microsoft Azure, and Google Cloud use these geographically separate locations containing one or more data centers to improve availability and reduce latency.
+    answer: What are cloud regions?
+  - value: 500
+    clue: This computing approach runs code in response to events without requiring the customer to provision or manage the underlying servers.
+    answer: What is serverless computing?
+- name: Ports
+  clues:
+  - value: 100
+    clue: This is the default port for unencrypted web traffic.
+    answer: What is port 80?
+  - value: 200
+    clue: This is the port most commonly used for users to SSH into remote servers.
+    answer: What is port 22?
+  - value: 300
+    clue: This port is used by the Domain Name System to translate hostnames into IP addresses.
+    answer: What is port 53?
+  - value: 400
+    clue: Port 25 is most commonly used for this mail service.
+    answer: What is SMTP?
+  - value: 500
+    clue: This is the process of mapping a port on an external router to a specific port on an internal device, commonly used to allow external access to local services.
+    answer: What is port forwarding?
+- name: Linux/Shell Scripting
+  clues:
+  - value: 100
+    clue: "(Shell Scripting): This special variable holds the exit status of the last command run, where 0 means success."
+    answer: What is $?
+  - value: 200
+    clue: "(Shell Scripting): This line at the very top of a script, starting with `#!`, tells the system which interpreter should run it."
+    answer: What is the shebang?
+  - value: 300
+    clue: "(Sysadmin): This command, used with u+x or 755, lets you run a script you just wrote without typing bash in front of it."
+    answer: What is chmod?
+  - value: 400
+    clue: "(Sysadmin): Running `systemctl start` only starts a service now. This systemctl subcommand makes it start automatically at every boot."
+    answer: What is enable?
+  - value: 500
+    clue: "(Sysadmin): This file controls which users can run commands as root, and it should only be edited with visudo to avoid locking yourself out."
+    answer: What is /etc/sudoers?
