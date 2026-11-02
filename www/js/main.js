@@ -105,7 +105,7 @@
     reveals.forEach(function (el) { revealer.observe(el); });
 
     var navLinks = {};
-    document.querySelectorAll("nav a").forEach(function (a) { navLinks[a.hash.slice(1)] = a; });
+    document.querySelectorAll("nav a").forEach(function (a) { if (a.hash) navLinks[a.hash.slice(1)] = a; });
     var spy = new IntersectionObserver(function (entries) {
       entries.forEach(function (e) {
         if (!e.isIntersecting || !navLinks[e.target.id]) return;
@@ -125,13 +125,15 @@
 
   var bar = document.getElementById("progress");
   var toTop = document.getElementById("top");
-  toTop.hidden = false;
-  toTop.addEventListener("click", function () { scrollTo({ top: 0, behavior: still ? "auto" : "smooth" }); });
+  if (toTop) {
+    toTop.hidden = false;
+    toTop.addEventListener("click", function () { scrollTo({ top: 0, behavior: still ? "auto" : "smooth" }); });
+  }
 
   var onScroll = function () {
     var max = root.scrollHeight - innerHeight;
-    bar.style.transform = "scaleX(" + (max > 0 ? scrollY / max : 0) + ")";
-    toTop.classList.toggle("show", scrollY > 400);
+    if (bar) bar.style.transform = "scaleX(" + (max > 0 ? scrollY / max : 0) + ")";
+    if (toTop) toTop.classList.toggle("show", scrollY > 400);
   };
   addEventListener("scroll", onScroll, { passive: true });
   addEventListener("resize", onScroll);
@@ -181,9 +183,9 @@
     el.addEventListener("pointerleave", onLeave);
   };
 
-  if (finePointer && !still) {
+  var band = document.querySelector(".band");
+  if (finePointer && !still && band) {
     // header glow + logo parallax
-    var band = document.querySelector(".band");
     var logo = document.querySelector(".logo");
     track(band, function (x, y, r) {
       band.style.setProperty("--gx", x + "px");
