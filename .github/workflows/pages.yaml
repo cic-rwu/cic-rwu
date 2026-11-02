@@ -1,0 +1,61 @@
+# .github/workflows/pages.yaml
+##
+# publishes www/ to GitHub Pages (cicrwu.org)
+# - pushes to the www branch that touch www/ deploy the site
+# - www/calendar/cic.ics must pass `bin/cical.sh check` first, so a bad edit never ships
+# - manual runs redeploy as-is
+# Requires Settings > Pages > Source set to "GitHub Actions", and the www branch allowed
+# to deploy in the github-pages environment (it only allows the default branch at first).
+##
+name: Pages
+
+on:
+  push:
+    branches: [www]
+    paths:
+      - "www/**"
+      - "bin/cical.sh"
+      - ".github/workflows/pages.yaml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# one deploy at a time; let an in-progress deploy finish rather than cancel it
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # no-op until the calendar (#46) is merged into www
+      - name: Check calendar
+        run: |
+          if [[ -x bin/cical.sh && -f www/calendar/cic.ics ]]; then
+            bin/cical.sh check
+          else
+            echo "no calendar on this branch yet; skipping"
+          fi
+
+      - uses: actions/configure-pages@v6
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: www
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
